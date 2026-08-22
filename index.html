@@ -2,176 +2,601 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>NC‑LAGE‑SYSTEM – Multi‑Form Navigation</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎨 MALERISCHER KOPF · SEIFENBLASEN · RAUCH · SCHATTEN</title>
 
 <style>
-  body {
-    background: #000;
-    color: #e6e6e6;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  background: #0a0a0f;
+  color: #c8d0d0;
+  font-family: 'Consolas', 'Courier New', monospace;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background: radial-gradient(ellipse at 50% 50%, #0a0a1a, #000000);
+  transition: background 0.8s ease;
+}
+.container {
+  max-width: 1000px;
+  width: 100%;
+  background: rgba(10,10,20,0.3);
+  border: 1px solid rgba(255,170,0,0.03);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 100px rgba(0,0,0,0.8);
+}
+.header {
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+  margin-bottom: 16px;
+}
+.header h1 {
+  font-size: 26px;
+  background: linear-gradient(90deg, #ffaa00, #ff66ff, #00ccff, #00ff88);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 4px;
+}
+.header .sub {
+  color: #445555;
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+.header .sub .maler { color: #ffaa00; }
+.header .sub .seife { color: #ff66ff; }
+.header .sub .rauch { color: #00ccff; }
 
-  h1 {
-    text-align: center;
-    padding: 20px;
-    color: #00eaff;
-  }
+.canvas-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  aspect-ratio: 1/1;
+  background: rgba(0,0,0,0.4);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.02);
+  overflow: hidden;
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+}
+#malerCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    padding: 20px;
-  }
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+@media (max-width:600px){ .info-grid { grid-template-columns:1fr 1fr; } }
+.info-card {
+  background: rgba(10,10,20,0.2);
+  border: 1px solid rgba(255,255,255,0.02);
+  border-radius: 8px;
+  padding: 8px 6px;
+  text-align: center;
+  font-size: 9px;
+}
+.info-card .value {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: monospace;
+}
+.info-card .label {
+  color: #445555;
+  font-size: 7px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
 
-  .module {
-    background: #111;
-    border: 1px solid #333;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-  }
+.controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 12px;
+}
+.controls button {
+  background: rgba(20,35,35,0.2);
+  color: #668888;
+  border: 1px solid rgba(255,255,255,0.02);
+  padding: 5px 16px;
+  border-radius: 18px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 9px;
+  transition: all 0.3s;
+}
+.controls button:hover { background: rgba(40,80,70,0.08); color: #aaeedd; }
+.controls button.active { background: rgba(40,80,70,0.06); color: #00ff88; }
+.controls button.maler { color: #ffaa00; border-color: rgba(255,170,0,0.05); }
+.controls button.seife { color: #ff66ff; border-color: rgba(255,102,255,0.05); }
+.controls button.rauch { color: #00ccff; border-color: rgba(0,204,255,0.05); }
 
-  .module h2 {
-    margin: 0;
-    color: #00ff9d;
-  }
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 12px;
+  margin-top: 10px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  font-size: 8px;
+  color: #445555;
+  border: 1px solid rgba(255,255,255,0.01);
+}
 
-  .module p {
-    margin: 6px 0;
-    font-size: 14px;
-  }
-
-  .btn {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 8px 14px;
-    background: #00eaff;
-    color: #000;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-  }
-
-  .btn:hover {
-    background: #00bcd4;
-  }
-
-  .shape-panel {
-    margin: 20px;
-    padding: 20px;
-    background: #111;
-    border-radius: 10px;
-    border: 1px solid #333;
-  }
-
-  .shape-panel h3 {
-    color: #ffdd00;
-  }
-
-  .shape-btn {
-    display: inline-block;
-    margin: 8px;
-    padding: 10px 16px;
-    background: #ffdd00;
-    color: #000;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-  }
-
-  .shape-btn:hover {
-    background: #c9b300;
-  }
+.footer {
+  text-align: center;
+  margin-top: 10px;
+  color: #222;
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+.footer span { color: #ffaa00; }
 </style>
 </head>
-
 <body>
 
-<h1>NC‑LAGE‑SYSTEM – Multi‑Form Navigation</h1>
+<div class="container">
 
-<!-- Raumformen -->
-<div class="shape-panel">
-  <h3>Raumformen</h3>
-  <a class="shape-btn" href="matrix.html">Matrix</a>
-  <a class="shape-btn" href="pyramide.html">Pyramide</a>
-  <a class="shape-btn" href="cube.html">Würfel</a>
-  <a class="shape-btn" href="cylinder.html">Cylinder</a>
-  <a class="shape-btn" href="reorg.html">REORG‑Ableitung</a>
-  <a class="shape-btn" href="zoom.html">CACHE/ZOOM</a>
-  <a class="shape-btn" href="gpu.html">GPU/CPU‑Sim</a>
+<div class="header">
+  <h1>🎨 MALERISCHER KOPF</h1>
+  <div class="sub"><span class="seife">SEIFENBLASEN</span> · <span class="rauch">RAUCH</span> · <span class="maler">SCHATTEN</span></div>
 </div>
 
-<!-- Module -->
-<div class="grid">
+<div class="canvas-wrap">
+  <canvas id="malerCanvas"></canvas>
+</div>
 
-  <div class="module">
-    <h2>ΔA – DA</h2>
-    <p>LAGE: Norden / Öffnung</p>
-    <p>NC‑Zeichen: ΔA</p>
-    <a class="btn" href="DA/X.room.IN">IN</a>
-    <a class="btn" href="DA/X.room.OUT">OUT</a>
-    <a class="btn" href="DA/X.room.CORE">CORE</a>
+<div class="info-grid">
+  <div class="info-card">
+    <div class="value" id="vermierDisplay" style="color:#ffaa00;">0</div>
+    <div class="label">VERMIERUNG</div>
   </div>
+  <div class="info-card">
+    <div class="value" id="druckDisplay" style="color:#ff66ff;">0</div>
+    <div class="label">DRUCK</div>
+  </div>
+  <div class="info-card">
+    <div class="value" id="schwingungDisplay" style="color:#00ccff;">0</div>
+    <div class="label">FARBSCHWINGUNG</div>
+  </div>
+  <div class="info-card">
+    <div class="value" id="nuanceDisplay" style="color:#00ff88;">0</div>
+    <div class="label">NUANCE</div>
+  </div>
+</div>
 
-  <div class="module">
-    <h2>NΞ – NE</h2>
-    <p>LAGE: Osten / Träger</p>
-    <p>NC‑Zeichen: NΞ</p>
-    <a class="btn" href="NE/X.room.IN">IN</a>
-    <a class="btn" href="NE/X.room.OUT">OUT</a>
-    <a class="btn" href="NE/X.room.CORE">CORE</a>
-  </div>
+<div class="controls">
+  <button class="active maler" id="btnStart">▶ START</button>
+  <button class="seife" id="btnSeife">🫧 SEIFE</button>
+  <button class="rauch" id="btnRauch">💨 RAUCH</button>
+  <button class="maler" id="btnSchatten">🌑 SCHATTEN</button>
+  <button id="btnProof">🔮 PROOF</button>
+  <button id="btnReset">⟲ RESET</button>
+</div>
 
-  <div class="module">
-    <h2>βN – BEN</h2>
-    <p>LAGE: Süden / Vollender</p>
-    <p>NC‑Zeichen: βN</p>
-    <a class="btn" href="BEN/X.room.IN">IN</a>
-    <a class="btn" href="BEN/X.room.OUT">OUT</a>
-    <a class="btn" href="BEN/X.room.CORE">CORE</a>
-  </div>
+<div class="status-bar">
+  <span>🎨 STATUS: <span id="statusText">vermiert</span></span>
+  <span>🫧 SEIFE: <span id="seifeStatus">0</span></span>
+  <span>💨 RAUCH: <span id="rauchStatus">0</span></span>
+</div>
 
-  <div class="module">
-    <h2>IX° – IX</h2>
-    <p>LAGE: Westen / Schieber</p>
-    <p>NC‑Zeichen: IX°</p>
-    <a class="btn" href="IX/X.room.IN">IN</a>
-    <a class="btn" href="IX/X.room.OUT">OUT</a>
-    <a class="btn" href="IX/X.room.CORE">CORE</a>
-  </div>
-
-  <div class="module">
-    <h2>XΙ – XI</h2>
-    <p>LAGE: NW / Schließer</p>
-    <p>NC‑Zeichen: XΙ</p>
-    <a class="btn" href="XI/X.room.IN">IN</a>
-    <a class="btn" href="XI/X.room.OUT">OUT</a>
-    <a class="btn" href="XI/X.room.CORE">CORE</a>
-  </div>
-
-  <div class="module">
-    <h2>RΩ – ROOM</h2>
-    <p>LAGE: Zentrum / Matrix</p>
-    <p>NC‑Zeichen: RΩ</p>
-    <a class="btn" href="ROOM/X.room.IN">IN</a>
-    <a class="btn" href="ROOM/X.room.OUT">OUT</a>
-    <a class="btn" href="ROOM/X.room.CORE">CORE</a>
-  </div>
-
-  <div class="module">
-    <h2>∪ – U</h2>
-    <p>LAGE: Ober‑Orbit / Ultra‑Navi</p>
-    <p>NC‑Zeichen: ∪</p>
-    <a class="btn" href="U/X.room.IN">IN</a>
-    <a class="btn" href="U/X.room.OUT">OUT</a>
-    <a class="btn" href="U/X.room.CORE">CORE</a>
-  </div>
+<div class="footer">
+  <span>🎨</span> MALERISCHER KOPF · VERMIERUNG · SEIFENBLASEN · RAUCH · SCHATTEN · <span>wieimmer4u</span>
+</div>
 
 </div>
+
+<script>
+// ============================================================
+// MALERISCHER KOPF · SEIFENBLASEN · RAUCH · SCHATTEN
+// ============================================================
+
+// ===== CANVAS =====
+const canvas = document.getElementById('malerCanvas');
+const ctx = canvas.getContext('2d');
+let running = true;
+let time = 0;
+let vermier = 0;
+let druck = 0;
+let schwingung = 0;
+let nuance = 0;
+let seifeCount = 0;
+let rauchCount = 0;
+let schattenCount = 0;
+
+// ===== PARTIKEL-SYSTEM =====
+let seifenblasen = [];
+let rauchPartikel = [];
+let schattenPunkte = [];
+
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const size = Math.min(rect.width, rect.height, 560);
+  canvas.width = size;
+  canvas.height = size;
+}
+window.addEventListener('resize', resizeCanvas);
+
+// ===== SEIFENBLASE =====
+function createSeifenblase() {
+  const w = canvas.width, h = canvas.height;
+  return {
+    x: w * 0.2 + Math.random() * w * 0.6,
+    y: h * 0.2 + Math.random() * h * 0.6,
+    r: 5 + Math.random() * 25,
+    dx: (Math.random() - 0.5) * 0.6,
+    dy: (Math.random() - 0.5) * 0.6,
+    life: 200 + Math.random() * 300,
+    hue: 200 + Math.random() * 160,
+    alpha: 0.1 + Math.random() * 0.3,
+    phase: Math.random() * Math.PI * 2
+  };
+}
+
+// ===== RAUCH-PARTIKEL =====
+function createRauch() {
+  const w = canvas.width, h = canvas.height;
+  return {
+    x: w * 0.3 + Math.random() * w * 0.4,
+    y: h * 0.3 + Math.random() * h * 0.4,
+    r: 3 + Math.random() * 15,
+    dx: (Math.random() - 0.5) * 0.3,
+    dy: -0.2 - Math.random() * 0.5,
+    life: 150 + Math.random() * 250,
+    alpha: 0.05 + Math.random() * 0.15,
+    gray: 50 + Math.random() * 100
+  };
+}
+
+// ===== SCHATTEN-PUNKT =====
+function createSchatten() {
+  const w = canvas.width, h = canvas.height;
+  return {
+    x: w * 0.1 + Math.random() * w * 0.8,
+    y: h * 0.1 + Math.random() * h * 0.8,
+    r: 2 + Math.random() * 10,
+    dx: (Math.random() - 0.5) * 0.2,
+    dy: (Math.random() - 0.5) * 0.2,
+    life: 100 + Math.random() * 200,
+    alpha: 0.02 + Math.random() * 0.08,
+    hue: 200 + Math.random() * 80
+  };
+}
+
+// ===== ZEICHNEN =====
+function drawMaler(time) {
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  // Hintergrund – sanftes Grau (Leinwand)
+  const bgGrad = ctx.createRadialGradient(w/2, h/2, 10, w/2, h/2, w/2);
+  bgGrad.addColorStop(0, '#1a1a22');
+  bgGrad.addColorStop(0.5, '#0f0f16');
+  bgGrad.addColorStop(1, '#050508');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, w, h);
+
+  // ===== RAUCH =====
+  for (const r of rauchPartikel) {
+    const alpha = r.alpha * (r.life / 250);
+    ctx.shadowColor = `rgba(100,100,120,${alpha * 0.3})`;
+    ctx.shadowBlur = 30;
+    ctx.fillStyle = `rgba(${r.gray},${r.gray},${r.gray + 20},${alpha * 0.5})`;
+    ctx.beginPath();
+    ctx.arc(r.x, r.y, r.r * (1 + Math.sin(time / 1000 + r.x) * 0.3), 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // ===== SEIFENBLASEN =====
+  for (const s of seifenblasen) {
+    const alpha = s.alpha * (s.life / 300);
+    const radius = s.r * (0.8 + Math.sin(time / 800 + s.phase) * 0.2);
+
+    // Glanz
+    ctx.shadowColor = `hsla(${s.hue}, 80%, 70%, ${alpha * 0.2})`;
+    ctx.shadowBlur = 40;
+
+    // Blase
+    const grad = ctx.createRadialGradient(
+      s.x - radius * 0.3, s.y - radius * 0.3, 2,
+      s.x, s.y, radius
+    );
+    grad.addColorStop(0, `hsla(${s.hue}, 100%, 90%, ${alpha * 0.3})`);
+    grad.addColorStop(0.3, `hsla(${s.hue + 20}, 80%, 70%, ${alpha * 0.15})`);
+    grad.addColorStop(0.7, `hsla(${s.hue + 40}, 60%, 40%, ${alpha * 0.1})`);
+    grad.addColorStop(1, `hsla(${s.hue + 60}, 40%, 20%, ${alpha * 0.05})`);
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Rand (Seifenblasen-Haut)
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = `hsla(${s.hue}, 80%, 80%, ${alpha * 0.1})`;
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, radius, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  // ===== SCHATTEN (Gesichts-Andeutung) =====
+  ctx.shadowBlur = 0;
+
+  // Grundform des Gesichts – nur angedeutet
+  const cx = w/2, cy = h/2;
+  const scale = Math.min(w, h) * 0.35;
+
+  // Gesichts-Silhouette (vermiert)
+  ctx.shadowColor = 'rgba(0,0,0,0)';
+  for (let i = 0; i < 60; i++) {
+    const angle = time / 2000 + i * 0.1 + Math.sin(time / 1500 + i * 0.2) * 0.05;
+    const dist = scale * (0.6 + Math.sin(time / 1000 + i * 0.1) * 0.15);
+    const x = cx + Math.cos(angle) * dist;
+    const y = cy + Math.sin(angle) * dist * 0.85;
+
+    const size = 2 + Math.sin(time / 500 + i * 0.3) * 2;
+    const alpha = 0.02 + Math.sin(time / 800 + i * 0.2) * 0.015;
+    ctx.fillStyle = `rgba(200,180,160,${alpha})`;
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Auge-Andeutungen (wie bei MAXX – nur angedeutet)
+  for (let side = -1; side <= 1; side += 2) {
+    for (let i = 0; i < 20; i++) {
+      const angle = time / 1500 + i * 0.2 + side * 0.5;
+      const dist = scale * (0.2 + Math.sin(time / 1200 + i * 0.15) * 0.05);
+      const x = cx + side * scale * 0.2 + Math.cos(angle) * dist * 0.5;
+      const y = cy - scale * 0.05 + Math.sin(angle) * dist * 0.3;
+
+      const size = 1 + Math.sin(time / 600 + i * 0.4) * 1.5;
+      const alpha = 0.03 + Math.sin(time / 700 + i * 0.3) * 0.02;
+      ctx.fillStyle = `rgba(180,200,220,${alpha})`;
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // Mund-Andeutung (nur Schatten)
+  for (let i = 0; i < 15; i++) {
+    const t = i / 14;
+    const x = cx + (t - 0.5) * scale * 0.3;
+    const y = cy + scale * 0.25 + Math.sin(t * Math.PI + time / 1200) * scale * 0.04;
+    const size = 1 + Math.sin(time / 800 + i * 0.3) * 1.5;
+    const alpha = 0.02 + Math.sin(time / 900 + i * 0.2) * 0.015;
+    ctx.fillStyle = `rgba(160,140,130,${alpha})`;
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // ===== SCHATTEN-PUNKTE =====
+  for (const s of schattenPunkte) {
+    const alpha = s.alpha * (s.life / 200);
+    ctx.shadowColor = `hsla(${s.hue}, 50%, 30%, ${alpha * 0.1})`;
+    ctx.shadowBlur = 20;
+    ctx.fillStyle = `hsla(${s.hue}, 40%, 30%, ${alpha * 0.3})`;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r * (1 + Math.sin(time / 1000 + s.x) * 0.2), 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.shadowBlur = 0;
+
+  // ===== NUANCEN-LINIEN =====
+  for (let i = 0; i < 5; i++) {
+    const y = h * 0.1 + i * h * 0.2 + Math.sin(time / 800 + i) * 5;
+    const alpha = 0.01 + Math.sin(time / 600 + i * 0.5) * 0.005;
+    ctx.strokeStyle = `rgba(200,180,160,${alpha})`;
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    for (let x = 0; x < w; x += 2) {
+      const yy = y + Math.sin(x * 0.02 + time / 1000 + i) * 3;
+      if (x === 0) ctx.moveTo(x, yy);
+      else ctx.lineTo(x, yy);
+    }
+    ctx.stroke();
+  }
+
+  // ===== INFO =====
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = '#445555';
+  ctx.font = '9px monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText(`🎨 VERMIERUNG ${Math.round(vermier)} · DRUCK ${Math.round(druck)}`, 10, h - 10);
+
+  // Status
+  document.getElementById('vermierDisplay').textContent = Math.round(vermier);
+  document.getElementById('druckDisplay').textContent = Math.round(druck);
+  document.getElementById('schwingungDisplay').textContent = Math.round(schwingung);
+  document.getElementById('nuanceDisplay').textContent = Math.round(nuance);
+  document.getElementById('seifeStatus').textContent = seifenblasen.length;
+  document.getElementById('rauchStatus').textContent = rauchPartikel.length;
+}
+
+// ===== UPDATE =====
+function update() {
+  if (!running) return;
+
+  const now = Date.now();
+  const dt = 16;
+
+  // Vermierung (langsame, fließende Veränderung)
+  vermier = 50 + Math.sin(now / 3000) * 30 + Math.sin(now / 5000) * 15;
+  druck = 30 + Math.sin(now / 2500 + 0.5) * 20 + Math.sin(now / 4000) * 10;
+  schwingung = 40 + Math.sin(now / 2000 + 1) * 25 + Math.sin(now / 3500) * 12;
+  nuance = 60 + Math.sin(now / 1800 + 0.3) * 20 + Math.sin(now / 2800) * 8;
+
+  // Seifenblasen
+  if (seifenblasen.length < 20 && Math.random() < 0.03) {
+    seifenblasen.push(createSeifenblase());
+  }
+  seifenblasen = seifenblasen.filter(s => {
+    s.x += s.dx;
+    s.y += s.dy;
+    s.life--;
+    s.r += Math.sin(now / 1000 + s.phase) * 0.02;
+    return s.life > 0 && s.x > 0 && s.x < canvas.width && s.y > 0 && s.y < canvas.height;
+  });
+
+  // Rauch
+  if (rauchPartikel.length < 30 && Math.random() < 0.02) {
+    rauchPartikel.push(createRauch());
+  }
+  rauchPartikel = rauchPartikel.filter(r => {
+    r.x += r.dx + Math.sin(now / 800 + r.y * 0.01) * 0.1;
+    r.y += r.dy;
+    r.r += 0.02;
+    r.life--;
+    return r.life > 0;
+  });
+
+  // Schatten
+  if (schattenPunkte.length < 40 && Math.random() < 0.02) {
+    schattenPunkte.push(createSchatten());
+  }
+  schattenPunkte = schattenPunkte.filter(s => {
+    s.x += s.dx + Math.sin(now / 600 + s.y * 0.01) * 0.05;
+    s.y += s.dy + Math.cos(now / 700 + s.x * 0.01) * 0.05;
+    s.life--;
+    return s.life > 0;
+  });
+
+  // Zeit
+  const seconds = Math.floor(now / 1000);
+  const minutes = Math.floor(seconds / 60);
+  document.getElementById('timeStatus').textContent =
+    `${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+
+  // Status
+  const status = seifenblasen.length > 10 ? 'schwebt' :
+                 rauchPartikel.length > 15 ? 'verraucht' :
+                 schattenPunkte.length > 20 ? 'verschattet' : 'vermiert';
+  document.getElementById('statusText').textContent = status;
+
+  // Zeichnen
+  drawMaler(now);
+
+  requestAnimationFrame(update);
+}
+
+// ===== TOGGLES =====
+function addSeife() {
+  for (let i = 0; i < 5; i++) {
+    seifenblasen.push(createSeifenblase());
+  }
+  console.log('🫧 SEIFENBLASEN hinzugefügt');
+}
+
+function addRauch() {
+  for (let i = 0; i < 10; i++) {
+    rauchPartikel.push(createRauch());
+  }
+  console.log('💨 RAUCH hinzugefügt');
+}
+
+function addSchatten() {
+  for (let i = 0; i < 10; i++) {
+    schattenPunkte.push(createSchatten());
+  }
+  console.log('🌑 SCHATTEN hinzugefügt');
+}
+
+// ===== PROOF =====
+function showProof() {
+  const proof = document.createElement('div');
+  proof.style.cssText = `
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999; backdrop-filter: blur(20px);
+    font-family: 'Consolas', monospace;
+  `;
+  proof.innerHTML = `
+    <div style="text-align:center; padding:40px; border:1px solid rgba(255,170,0,0.1); border-radius:20px; background:rgba(10,10,20,0.6); max-width:450px;">
+      <div style="font-size:48px; color:#ffaa00;">🎨</div>
+      <div style="color:#ffaa00; font-size:20px; margin:12px 0; letter-spacing:4px;">MALERISCHER KOPF</div>
+      <div style="color:#88ddbb; font-size:13px; line-height:1.8;">
+        🫧 SEIFENBLASEN: ${seifenblasen.length}<br>
+        💨 RAUCH: ${rauchPartikel.length}<br>
+        🌑 SCHATTEN: ${schattenPunkte.length}<br>
+        🎨 VERMIERUNG: ${Math.round(vermier)}<br>
+        💪 DRUCK: ${Math.round(druck)}<br>
+        🌊 SCHWINGUNG: ${Math.round(schwingung)}<br>
+        🎯 NUANCE: ${Math.round(nuance)}
+      </div>
+      <div style="color:#445555; font-size:10px; margin-top:12px; border-top:1px solid rgba(255,255,255,0.02); padding-top:12px;">
+        SEIFENBLASEN · RAUCH · SCHATTEN · VERMIERUNG
+      </div>
+      <button onclick="this.parentElement.parentElement.remove()" style="
+        margin-top:14px; background:rgba(20,35,35,0.2); color:#668888;
+        border:1px solid rgba(255,255,255,0.02); padding:6px 20px;
+        border-radius:18px; cursor:pointer; font-family:inherit; font-size:9px;
+      ">⏎ SCHLIESSEN</button>
+    </div>
+  `;
+  document.body.appendChild(proof);
+}
+
+// ===== RESET =====
+function resetAll() {
+  seifenblasen = [];
+  rauchPartikel = [];
+  schattenPunkte = [];
+  vermier = 0;
+  druck = 0;
+  schwingung = 0;
+  nuance = 0;
+  document.getElementById('btnStart').classList.remove('active');
+  document.getElementById('statusText').textContent = 'reset';
+}
+
+// ===== CONTROLS =====
+document.getElementById('btnStart').addEventListener('click', () => {
+  running = !running;
+  document.getElementById('btnStart').classList.toggle('active');
+  document.getElementById('btnStart').textContent = running ? '▶ START' : '⏸ PAUSE';
+  document.getElementById('statusText').textContent = running ? 'vermiert' : 'pausiert';
+  if (running) update();
+});
+
+document.getElementById('btnSeife').addEventListener('click', addSeife);
+document.getElementById('btnRauch').addEventListener('click', addRauch);
+document.getElementById('btnSchatten').addEventListener('click', addSchatten);
+document.getElementById('btnProof').addEventListener('click', showProof);
+document.getElementById('btnReset').addEventListener('click', resetAll);
+
+// ===== TASTATUR =====
+document.addEventListener('keydown', (e) => {
+  if (e.key === ' ') { e.preventDefault(); document.getElementById('btnStart').click(); }
+  if (e.key === 's' || e.key === 'S') document.getElementById('btnSeife').click();
+  if (e.key === 'r' || e.key === 'R') document.getElementById('btnRauch').click();
+  if (e.key === 'a' || e.key === 'A') document.getElementById('btnSchatten').click();
+  if (e.key === 'p' || e.key === 'P') document.getElementById('btnProof').click();
+  if (e.key === 'x' || e.key === 'X') document.getElementById('btnReset').click();
+});
+
+// ===== INIT =====
+resizeCanvas();
+setTimeout(resizeCanvas, 200);
+update();
+
+console.log('🎨 MALERISCHER KOPF · SEIFENBLASEN · RAUCH · SCHATTEN');
+console.log('🫧 Seifenblasen · 💨 Rauch · 🌑 Schatten · Vermierung');
+console.log('⌨️  Leertaste=Start/Pause  s=SEIFE  r=RAUCH  a=SCHATTEN  p=PROOF  x=Reset');
+</script>
 
 </body>
 </html>
