@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎨 MALERISCHER KOPF · SEIFENBLASEN · RAUCH · SCHATTEN</title>
+<title>💃 TANZ · SHUFFLE · DREH · 2 SPIELER</title>
 
 <style>
 * { box-sizing:border-box; margin:0; padding:0; }
@@ -17,7 +17,6 @@ body {
   align-items: center;
   padding: 16px;
   background: radial-gradient(ellipse at 50% 50%, #0a0a1a, #000000);
-  transition: background 0.8s ease;
 }
 .container {
   max-width: 1000px;
@@ -37,7 +36,7 @@ body {
 }
 .header h1 {
   font-size: 26px;
-  background: linear-gradient(90deg, #ffaa00, #ff66ff, #00ccff, #00ff88);
+  background: linear-gradient(90deg, #ff4444, #ffaa00, #00ff88, #00ccff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: 4px;
@@ -47,40 +46,106 @@ body {
   font-size: 11px;
   letter-spacing: 3px;
 }
-.header .sub .maler { color: #ffaa00; }
-.header .sub .seife { color: #ff66ff; }
-.header .sub .rauch { color: #00ccff; }
+.header .sub .p1 { color: #ff4444; }
+.header .sub .p2 { color: #00ccff; }
 
 .canvas-wrap {
   position: relative;
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
-  aspect-ratio: 1/1;
+  aspect-ratio: 16/9;
   background: rgba(0,0,0,0.4);
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,0.02);
   overflow: hidden;
-  box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
 }
-#malerCanvas {
+#tanzCanvas {
   width: 100%;
   height: 100%;
   display: block;
 }
 
-.info-grid {
+.key-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-top: 12px;
 }
-@media (max-width:600px){ .info-grid { grid-template-columns:1fr 1fr; } }
+@media (max-width:600px){ .key-grid { grid-template-columns:1fr; } }
+.key-panel {
+  background: rgba(10,10,20,0.2);
+  border: 1px solid rgba(255,255,255,0.02);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+}
+.key-panel .title {
+  font-size: 11px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+.key-panel .title.p1 { color: #ff4444; }
+.key-panel .title.p2 { color: #00ccff; }
+.key-row {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin: 2px 0;
+}
+.key-btn {
+  background: rgba(20,35,35,0.2);
+  color: #668888;
+  border: 1px solid rgba(255,255,255,0.02);
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  transition: all 0.15s;
+  min-width: 32px;
+  text-align: center;
+  position: relative;
+}
+.key-btn:hover { background: rgba(40,80,70,0.08); color: #aaeedd; }
+.key-btn.active-p1 {
+  background: #ff444455;
+  border-color: #ff4444aa;
+  color: #ff4444;
+  box-shadow: 0 0 30px rgba(255,68,68,0.15);
+  animation: pulseP1 0.3s ease;
+}
+.key-btn.active-p2 {
+  background: #00ccff55;
+  border-color: #00ccffaa;
+  color: #00ccff;
+  box-shadow: 0 0 30px rgba(0,204,255,0.15);
+  animation: pulseP2 0.3s ease;
+}
+@keyframes pulseP1 {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); background: #ff444477; }
+  100% { transform: scale(1); }
+}
+@keyframes pulseP2 {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); background: #00ccff77; }
+  100% { transform: scale(1); }
+}
+.key-btn.p1 { color: #ff4444; border-color: rgba(255,68,68,0.1); }
+.key-btn.p2 { color: #00ccff; border-color: rgba(0,204,255,0.1); }
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
 .info-card {
   background: rgba(10,10,20,0.2);
   border: 1px solid rgba(255,255,255,0.02);
   border-radius: 8px;
-  padding: 8px 6px;
+  padding: 6px 8px;
   text-align: center;
   font-size: 9px;
 }
@@ -94,15 +159,13 @@ body {
   font-size: 7px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-top: 2px;
 }
-
 .controls {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 .controls button {
   background: rgba(20,35,35,0.2);
@@ -117,25 +180,20 @@ body {
 }
 .controls button:hover { background: rgba(40,80,70,0.08); color: #aaeedd; }
 .controls button.active { background: rgba(40,80,70,0.06); color: #00ff88; }
-.controls button.maler { color: #ffaa00; border-color: rgba(255,170,0,0.05); }
-.controls button.seife { color: #ff66ff; border-color: rgba(255,102,255,0.05); }
-.controls button.rauch { color: #00ccff; border-color: rgba(0,204,255,0.05); }
-
 .status-bar {
   display: flex;
   justify-content: space-between;
   padding: 6px 12px;
-  margin-top: 10px;
+  margin-top: 8px;
   background: rgba(0,0,0,0.2);
   border-radius: 8px;
   font-size: 8px;
   color: #445555;
   border: 1px solid rgba(255,255,255,0.01);
 }
-
 .footer {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 8px;
   color: #222;
   font-size: 8px;
   letter-spacing: 2px;
@@ -148,375 +206,384 @@ body {
 <div class="container">
 
 <div class="header">
-  <h1>🎨 MALERISCHER KOPF</h1>
-  <div class="sub"><span class="seife">SEIFENBLASEN</span> · <span class="rauch">RAUCH</span> · <span class="maler">SCHATTEN</span></div>
+  <h1>💃 SHUFFLE · DREH · 2 SPIELER</h1>
+  <div class="sub"><span class="p1">🔴 SPIELER 1 · 1-9</span> vs <span class="p2">🔵 SPIELER 2 · QWEAZDYXC</span></div>
 </div>
 
 <div class="canvas-wrap">
-  <canvas id="malerCanvas"></canvas>
+  <canvas id="tanzCanvas"></canvas>
+</div>
+
+<div class="key-grid">
+  <div class="key-panel">
+    <div class="title p1">🔴 SPIELER 1 · 1-9</div>
+    <div class="key-row"><span class="key-btn p1" data-key="1">1</span><span class="key-btn p1" data-key="2">2</span><span class="key-btn p1" data-key="3">3</span></div>
+    <div class="key-row"><span class="key-btn p1" data-key="4">4</span><span class="key-btn p1" data-key="5">5</span><span class="key-btn p1" data-key="6">6</span></div>
+    <div class="key-row"><span class="key-btn p1" data-key="7">7</span><span class="key-btn p1" data-key="8">8</span><span class="key-btn p1" data-key="9">9</span></div>
+  </div>
+  <div class="key-panel">
+    <div class="title p2">🔵 SPIELER 2 · QWEAZDYXC</div>
+    <div class="key-row"><span class="key-btn p2" data-key="q">Q</span><span class="key-btn p2" data-key="w">W</span><span class="key-btn p2" data-key="e">E</span></div>
+    <div class="key-row"><span class="key-btn p2" data-key="a">A</span><span class="key-btn p2" data-key="z">Z</span><span class="key-btn p2" data-key="d">D</span></div>
+    <div class="key-row"><span class="key-btn p2" data-key="y">Y</span><span class="key-btn p2" data-key="x">X</span><span class="key-btn p2" data-key="c">C</span></div>
+  </div>
 </div>
 
 <div class="info-grid">
-  <div class="info-card">
-    <div class="value" id="vermierDisplay" style="color:#ffaa00;">0</div>
-    <div class="label">VERMIERUNG</div>
-  </div>
-  <div class="info-card">
-    <div class="value" id="druckDisplay" style="color:#ff66ff;">0</div>
-    <div class="label">DRUCK</div>
-  </div>
-  <div class="info-card">
-    <div class="value" id="schwingungDisplay" style="color:#00ccff;">0</div>
-    <div class="label">FARBSCHWINGUNG</div>
-  </div>
-  <div class="info-card">
-    <div class="value" id="nuanceDisplay" style="color:#00ff88;">0</div>
-    <div class="label">NUANCE</div>
-  </div>
+  <div class="info-card"><div class="value" id="p1Score" style="color:#ff4444;">0</div><div class="label">🔴 SPIELER 1</div></div>
+  <div class="info-card"><div class="value" id="moveDisplay" style="color:#ffaa00;">—</div><div class="label">🎯 MOVE</div></div>
+  <div class="info-card"><div class="value" id="p2Score" style="color:#00ccff;">0</div><div class="label">🔵 SPIELER 2</div></div>
 </div>
 
 <div class="controls">
-  <button class="active maler" id="btnStart">▶ START</button>
-  <button class="seife" id="btnSeife">🫧 SEIFE</button>
-  <button class="rauch" id="btnRauch">💨 RAUCH</button>
-  <button class="maler" id="btnSchatten">🌑 SCHATTEN</button>
+  <button class="active" id="btnStart">▶ START</button>
+  <button id="btnMove">🎯 MOVE</button>
+  <button id="btnShuffle">🔀 SHUFFLE</button>
+  <button id="btnSpin">🔄 DREH</button>
   <button id="btnProof">🔮 PROOF</button>
   <button id="btnReset">⟲ RESET</button>
 </div>
 
 <div class="status-bar">
-  <span>🎨 STATUS: <span id="statusText">vermiert</span></span>
-  <span>🫧 SEIFE: <span id="seifeStatus">0</span></span>
-  <span>💨 RAUCH: <span id="rauchStatus">0</span></span>
+  <span>💃 STATUS: <span id="statusText">tanzt</span></span>
+  <span>🎯 MOVE: <span id="moveStatus">—</span></span>
+  <span>🔄 DREH: <span id="spinStatus">0°</span></span>
 </div>
 
 <div class="footer">
-  <span>🎨</span> MALERISCHER KOPF · VERMIERUNG · SEIFENBLASEN · RAUCH · SCHATTEN · <span>wieimmer4u</span>
+  <span>💃</span> SHUFFLE · DREH · 2 SPIELER · <span>wieimmer4u</span>
 </div>
 
 </div>
 
 <script>
 // ============================================================
-// MALERISCHER KOPF · SEIFENBLASEN · RAUCH · SCHATTEN
+// SHUFFLE · DREH · 2 SPIELER · 9 TASTEN
 // ============================================================
 
-// ===== CANVAS =====
-const canvas = document.getElementById('malerCanvas');
+const canvas = document.getElementById('tanzCanvas');
 const ctx = canvas.getContext('2d');
 let running = true;
 let time = 0;
-let vermier = 0;
-let druck = 0;
-let schwingung = 0;
-let nuance = 0;
-let seifeCount = 0;
-let rauchCount = 0;
-let schattenCount = 0;
-
-// ===== PARTIKEL-SYSTEM =====
-let seifenblasen = [];
-let rauchPartikel = [];
-let schattenPunkte = [];
+let p1Score = 0, p2Score = 0;
+let currentMove = '—';
+let frame = 0;
+let spinAngle = 0;
+let shuffleMode = false;
+let spinSpeed = 0;
 
 function resizeCanvas() {
   const rect = canvas.parentElement.getBoundingClientRect();
-  const size = Math.min(rect.width, rect.height, 560);
-  canvas.width = size;
-  canvas.height = size;
+  canvas.width = rect.width || 700;
+  canvas.height = rect.height || (rect.width * 9/16) || 390;
 }
 window.addEventListener('resize', resizeCanvas);
 
-// ===== SEIFENBLASE =====
-function createSeifenblase() {
-  const w = canvas.width, h = canvas.height;
-  return {
-    x: w * 0.2 + Math.random() * w * 0.6,
-    y: h * 0.2 + Math.random() * h * 0.6,
-    r: 5 + Math.random() * 25,
-    dx: (Math.random() - 0.5) * 0.6,
-    dy: (Math.random() - 0.5) * 0.6,
-    life: 200 + Math.random() * 300,
-    hue: 200 + Math.random() * 160,
-    alpha: 0.1 + Math.random() * 0.3,
-    phase: Math.random() * Math.PI * 2
-  };
+// ===== POSEN =====
+const POSES = {
+  '1': { armL: -40, armR: -30, legL: -20, legR: -10, body: 0, head: 0, label: 'Step L' },
+  '2': { armL: -30, armR: -40, legL: -10, legR: -20, body: 2, head: 2, label: 'Step R' },
+  '3': { armL: -50, armR: 20, legL: -30, legR: 10, body: 4, head: 4, label: 'Arm L' },
+  '4': { armL: 20, armR: -50, legL: 10, legR: -30, body: 6, head: 6, label: 'Arm R' },
+  '5': { armL: 40, armR: 40, legL: 0, legR: 0, body: 8, head: 8, label: 'Jump' },
+  '6': { armL: -60, armR: 60, legL: -20, legR: 20, body: 10, head: 10, label: 'Spread' },
+  '7': { armL: 0, armR: 0, legL: -40, legR: 40, body: 12, head: 12, label: 'Split' },
+  '8': { armL: 30, armR: -30, legL: -20, legR: -20, body: 14, head: 14, label: 'Twist' },
+  '9': { armL: -20, armR: 20, legL: 20, legR: -20, body: 16, head: 16, label: 'Spin' },
+  'q': { armL: -35, armR: -35, legL: -15, legR: -15, body: 1, head: 1, label: 'Sway L' },
+  'w': { armL: 35, armR: 35, legL: 15, legR: 15, body: 3, head: 3, label: 'Sway R' },
+  'e': { armL: -45, armR: 10, legL: -25, legR: 5, body: 5, head: 5, label: 'Wave L' },
+  'a': { armL: 10, armR: -45, legL: 5, legR: -25, body: 7, head: 7, label: 'Wave R' },
+  'z': { armL: 50, armR: -20, legL: 10, legR: -10, body: 9, head: 9, label: 'Power' },
+  'd': { armL: -20, armR: 50, legL: -10, legR: 10, body: 11, head: 11, label: 'Grace' },
+  'y': { armL: 20, armR: 20, legL: -30, legR: 30, body: 13, head: 13, label: 'Float' },
+  'x': { armL: -40, armR: -40, legL: 30, legR: -30, body: 15, head: 15, label: 'Cross' },
+  'c': { armL: 0, armR: 0, legL: 0, legR: 0, body: 17, head: 17, label: 'Center' }
+};
+
+// ===== TANZER =====
+let p1 = { x: 0.28, y: 0.55, pose: '5', color: '#ff4444', label: 'P1', rot: 0 };
+let p2 = { x: 0.72, y: 0.55, pose: 'c', color: '#00ccff', label: 'P2', rot: 0 };
+
+// ===== DRAW =====
+function drawStickman(ctx, x, y, pose, color, label, scale, alpha, rot) {
+  const s = scale * 1.8; // Doppelt so groß!
+  const p = POSES[pose] || POSES['5'];
+  const tilt = p.body * 0.008;
+
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rot + tilt);
+  ctx.globalAlpha = alpha || 1;
+
+  // Schatten-Glow
+  ctx.shadowColor = color + '55';
+  ctx.shadowBlur = 30;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 4.5;
+
+  // Kopf
+  ctx.shadowBlur = 20;
+  ctx.beginPath();
+  ctx.arc(0, -s * 1.2 + p.head * 0.02 * s, s * 0.22, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Körper
+  ctx.shadowBlur = 12;
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(0, -s * 0.9 + p.body * 0.015 * s);
+  ctx.lineTo(0, s * 0.2 + p.body * 0.015 * s);
+  ctx.stroke();
+
+  // Arme
+  ctx.lineWidth = 4.5;
+  ctx.beginPath();
+  ctx.moveTo(0, -s * 0.7 + p.body * 0.015 * s);
+  ctx.lineTo(-s * 0.5 + p.armL * 0.008 * s, -s * 0.2 + p.body * 0.015 * s);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(0, -s * 0.7 + p.body * 0.015 * s);
+  ctx.lineTo(s * 0.5 + p.armR * 0.008 * s, -s * 0.2 + p.body * 0.015 * s);
+  ctx.stroke();
+
+  // Beine
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(0, s * 0.2 + p.body * 0.015 * s);
+  ctx.lineTo(-s * 0.3 + p.legL * 0.01 * s, s * 0.7 + p.legL * 0.01 * s);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(0, s * 0.2 + p.body * 0.015 * s);
+  ctx.lineTo(s * 0.3 + p.legR * 0.01 * s, s * 0.7 + p.legR * 0.01 * s);
+  ctx.stroke();
+
+  // Name
+  ctx.shadowBlur = 0;
+  ctx.globalAlpha = 0.6;
+  ctx.fillStyle = color;
+  ctx.font = '10px monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText(label, 0, -s * 1.5);
+
+  ctx.restore();
+  ctx.globalAlpha = 1;
 }
 
-// ===== RAUCH-PARTIKEL =====
-function createRauch() {
-  const w = canvas.width, h = canvas.height;
-  return {
-    x: w * 0.3 + Math.random() * w * 0.4,
-    y: h * 0.3 + Math.random() * h * 0.4,
-    r: 3 + Math.random() * 15,
-    dx: (Math.random() - 0.5) * 0.3,
-    dy: -0.2 - Math.random() * 0.5,
-    life: 150 + Math.random() * 250,
-    alpha: 0.05 + Math.random() * 0.15,
-    gray: 50 + Math.random() * 100
-  };
-}
-
-// ===== SCHATTEN-PUNKT =====
-function createSchatten() {
-  const w = canvas.width, h = canvas.height;
-  return {
-    x: w * 0.1 + Math.random() * w * 0.8,
-    y: h * 0.1 + Math.random() * h * 0.8,
-    r: 2 + Math.random() * 10,
-    dx: (Math.random() - 0.5) * 0.2,
-    dy: (Math.random() - 0.5) * 0.2,
-    life: 100 + Math.random() * 200,
-    alpha: 0.02 + Math.random() * 0.08,
-    hue: 200 + Math.random() * 80
-  };
-}
-
-// ===== ZEICHNEN =====
-function drawMaler(time) {
+// ===== RENDER =====
+function render() {
   const w = canvas.width, h = canvas.height;
   ctx.clearRect(0, 0, w, h);
 
-  // Hintergrund – sanftes Grau (Leinwand)
-  const bgGrad = ctx.createRadialGradient(w/2, h/2, 10, w/2, h/2, w/2);
-  bgGrad.addColorStop(0, '#1a1a22');
-  bgGrad.addColorStop(0.5, '#0f0f16');
-  bgGrad.addColorStop(1, '#050508');
-  ctx.fillStyle = bgGrad;
+  // Hintergrund
+  const grad = ctx.createRadialGradient(w/2, h/2, 10, w/2, h/2, w/2);
+  grad.addColorStop(0, '#0a0a1a');
+  grad.addColorStop(0.5, '#050510');
+  grad.addColorStop(1, '#000000');
+  ctx.fillStyle = grad;
   ctx.fillRect(0, 0, w, h);
 
-  // ===== RAUCH =====
-  for (const r of rauchPartikel) {
-    const alpha = r.alpha * (r.life / 250);
-    ctx.shadowColor = `rgba(100,100,120,${alpha * 0.3})`;
-    ctx.shadowBlur = 30;
-    ctx.fillStyle = `rgba(${r.gray},${r.gray},${r.gray + 20},${alpha * 0.5})`;
-    ctx.beginPath();
-    ctx.arc(r.x, r.y, r.r * (1 + Math.sin(time / 1000 + r.x) * 0.3), 0, Math.PI * 2);
-    ctx.fill();
-  }
+  // Tanzfläche
+  ctx.strokeStyle = 'rgba(255,255,255,0.02)';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  ctx.moveTo(0, h * 0.8);
+  ctx.lineTo(w, h * 0.8);
+  ctx.stroke();
 
-  // ===== SEIFENBLASEN =====
-  for (const s of seifenblasen) {
-    const alpha = s.alpha * (s.life / 300);
-    const radius = s.r * (0.8 + Math.sin(time / 800 + s.phase) * 0.2);
-
-    // Glanz
-    ctx.shadowColor = `hsla(${s.hue}, 80%, 70%, ${alpha * 0.2})`;
-    ctx.shadowBlur = 40;
-
-    // Blase
-    const grad = ctx.createRadialGradient(
-      s.x - radius * 0.3, s.y - radius * 0.3, 2,
-      s.x, s.y, radius
-    );
-    grad.addColorStop(0, `hsla(${s.hue}, 100%, 90%, ${alpha * 0.3})`);
-    grad.addColorStop(0.3, `hsla(${s.hue + 20}, 80%, 70%, ${alpha * 0.15})`);
-    grad.addColorStop(0.7, `hsla(${s.hue + 40}, 60%, 40%, ${alpha * 0.1})`);
-    grad.addColorStop(1, `hsla(${s.hue + 60}, 40%, 20%, ${alpha * 0.05})`);
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, radius, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Rand (Seifenblasen-Haut)
-    ctx.shadowBlur = 0;
-    ctx.strokeStyle = `hsla(${s.hue}, 80%, 80%, ${alpha * 0.1})`;
-    ctx.lineWidth = 0.5;
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, radius, 0, Math.PI * 2);
-    ctx.stroke();
-  }
-
-  // ===== SCHATTEN (Gesichts-Andeutung) =====
-  ctx.shadowBlur = 0;
-
-  // Grundform des Gesichts – nur angedeutet
-  const cx = w/2, cy = h/2;
-  const scale = Math.min(w, h) * 0.35;
-
-  // Gesichts-Silhouette (vermiert)
-  ctx.shadowColor = 'rgba(0,0,0,0)';
-  for (let i = 0; i < 60; i++) {
-    const angle = time / 2000 + i * 0.1 + Math.sin(time / 1500 + i * 0.2) * 0.05;
-    const dist = scale * (0.6 + Math.sin(time / 1000 + i * 0.1) * 0.15);
-    const x = cx + Math.cos(angle) * dist;
-    const y = cy + Math.sin(angle) * dist * 0.85;
-
-    const size = 2 + Math.sin(time / 500 + i * 0.3) * 2;
-    const alpha = 0.02 + Math.sin(time / 800 + i * 0.2) * 0.015;
-    ctx.fillStyle = `rgba(200,180,160,${alpha})`;
-    ctx.beginPath();
-    ctx.arc(x, y, size, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  // Auge-Andeutungen (wie bei MAXX – nur angedeutet)
-  for (let side = -1; side <= 1; side += 2) {
-    for (let i = 0; i < 20; i++) {
-      const angle = time / 1500 + i * 0.2 + side * 0.5;
-      const dist = scale * (0.2 + Math.sin(time / 1200 + i * 0.15) * 0.05);
-      const x = cx + side * scale * 0.2 + Math.cos(angle) * dist * 0.5;
-      const y = cy - scale * 0.05 + Math.sin(angle) * dist * 0.3;
-
-      const size = 1 + Math.sin(time / 600 + i * 0.4) * 1.5;
-      const alpha = 0.03 + Math.sin(time / 700 + i * 0.3) * 0.02;
-      ctx.fillStyle = `rgba(180,200,220,${alpha})`;
+  // Shuffle-Lichter
+  if (shuffleMode) {
+    for (let i = 0; i < 30; i++) {
+      const x = (i / 30) * w;
+      const y = h * 0.8 + Math.sin(i * 0.5 + time / 500) * 6;
+      const alpha = 0.02 + Math.sin(i * 0.3 + time / 700) * 0.015;
+      ctx.fillStyle = `rgba(255,170,0,${alpha})`;
       ctx.beginPath();
-      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.arc(x, y, 2 + Math.sin(time / 400 + i) * 1, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
-  // Mund-Andeutung (nur Schatten)
-  for (let i = 0; i < 15; i++) {
-    const t = i / 14;
-    const x = cx + (t - 0.5) * scale * 0.3;
-    const y = cy + scale * 0.25 + Math.sin(t * Math.PI + time / 1200) * scale * 0.04;
-    const size = 1 + Math.sin(time / 800 + i * 0.3) * 1.5;
-    const alpha = 0.02 + Math.sin(time / 900 + i * 0.2) * 0.015;
-    ctx.fillStyle = `rgba(160,140,130,${alpha})`;
-    ctx.beginPath();
-    ctx.arc(x, y, size, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  // ===== SCHATTEN-PUNKTE =====
-  for (const s of schattenPunkte) {
-    const alpha = s.alpha * (s.life / 200);
-    ctx.shadowColor = `hsla(${s.hue}, 50%, 30%, ${alpha * 0.1})`;
-    ctx.shadowBlur = 20;
-    ctx.fillStyle = `hsla(${s.hue}, 40%, 30%, ${alpha * 0.3})`;
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r * (1 + Math.sin(time / 1000 + s.x) * 0.2), 0, Math.PI * 2);
-    ctx.fill();
-  }
-
+  // Move
   ctx.shadowBlur = 0;
+  ctx.fillStyle = '#ffaa0044';
+  ctx.font = '14px monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText(`🎯 MOVE: ${currentMove}`, w/2, h * 0.82);
 
-  // ===== NUANCEN-LINIEN =====
-  for (let i = 0; i < 5; i++) {
-    const y = h * 0.1 + i * h * 0.2 + Math.sin(time / 800 + i) * 5;
-    const alpha = 0.01 + Math.sin(time / 600 + i * 0.5) * 0.005;
-    ctx.strokeStyle = `rgba(200,180,160,${alpha})`;
-    ctx.lineWidth = 0.5;
-    ctx.beginPath();
-    for (let x = 0; x < w; x += 2) {
-      const yy = y + Math.sin(x * 0.02 + time / 1000 + i) * 3;
-      if (x === 0) ctx.moveTo(x, yy);
-      else ctx.lineTo(x, yy);
-    }
-    ctx.stroke();
-  }
-
-  // ===== INFO =====
-  ctx.shadowBlur = 0;
-  ctx.fillStyle = '#445555';
-  ctx.font = '9px monospace';
+  // Score
+  ctx.fillStyle = '#ff444466';
+  ctx.font = '14px monospace';
   ctx.textAlign = 'left';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(`🎨 VERMIERUNG ${Math.round(vermier)} · DRUCK ${Math.round(druck)}`, 10, h - 10);
+  ctx.textBaseline = 'top';
+  ctx.fillText(`🔴 ${p1Score}`, 12, 10);
+  ctx.fillStyle = '#00ccff66';
+  ctx.textAlign = 'right';
+  ctx.fillText(`🔵 ${p2Score}`, w - 12, 10);
 
-  // Status
-  document.getElementById('vermierDisplay').textContent = Math.round(vermier);
-  document.getElementById('druckDisplay').textContent = Math.round(druck);
-  document.getElementById('schwingungDisplay').textContent = Math.round(schwingung);
-  document.getElementById('nuanceDisplay').textContent = Math.round(nuance);
-  document.getElementById('seifeStatus').textContent = seifenblasen.length;
-  document.getElementById('rauchStatus').textContent = rauchPartikel.length;
+  // Dreh-Status
+  ctx.fillStyle = '#445555';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText(`🔄 ${Math.round(spinAngle)}°`, w/2, 4);
+
+  // Schatten
+  const scale = Math.min(w, h) * 0.075;
+  const p1x = w * p1.x, p1y = h * 0.7;
+  const p2x = w * p2.x, p2y = h * 0.7;
+
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = 'rgba(0,0,0,0.25)';
+  ctx.beginPath();
+  ctx.ellipse(p1x, h * 0.82, scale * 0.45, scale * 0.12, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(p2x, h * 0.82, scale * 0.45, scale * 0.12, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Männchen zeichnen
+  drawStickman(ctx, p1x, p1y, p1.pose, p1.color, 'P1', scale, 1, p1.rot + spinAngle);
+  drawStickman(ctx, p2x, p2y, p2.pose, p2.color, 'P2', scale, 1, p2.rot + spinAngle);
+
+  // Verbindung
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  ctx.lineWidth = 0.5;
+  ctx.setLineDash([4, 8]);
+  ctx.beginPath();
+  ctx.moveTo(p1x, p1y - scale * 1.2);
+  ctx.lineTo(p2x, p2y - scale * 1.2);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Shuffle-Badge
+  if (shuffleMode) {
+    ctx.fillStyle = '#ffaa0044';
+    ctx.font = '10px monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText('🔀 SHUFFLE', w/2, h * 0.78);
+  }
 }
 
 // ===== UPDATE =====
 function update() {
   if (!running) return;
+  time += 16;
+  frame++;
 
-  const now = Date.now();
-  const dt = 16;
-
-  // Vermierung (langsame, fließende Veränderung)
-  vermier = 50 + Math.sin(now / 3000) * 30 + Math.sin(now / 5000) * 15;
-  druck = 30 + Math.sin(now / 2500 + 0.5) * 20 + Math.sin(now / 4000) * 10;
-  schwingung = 40 + Math.sin(now / 2000 + 1) * 25 + Math.sin(now / 3500) * 12;
-  nuance = 60 + Math.sin(now / 1800 + 0.3) * 20 + Math.sin(now / 2800) * 8;
-
-  // Seifenblasen
-  if (seifenblasen.length < 20 && Math.random() < 0.03) {
-    seifenblasen.push(createSeifenblase());
+  // Move rotieren
+  const moveKeys = Object.keys(POSES);
+  if (frame % 120 === 0) {
+    const randomKey = moveKeys[Math.floor(Math.random() * moveKeys.length)];
+    currentMove = POSES[randomKey]?.label || '—';
+    document.getElementById('moveDisplay').textContent = currentMove;
+    document.getElementById('moveStatus').textContent = currentMove;
   }
-  seifenblasen = seifenblasen.filter(s => {
-    s.x += s.dx;
-    s.y += s.dy;
-    s.life--;
-    s.r += Math.sin(now / 1000 + s.phase) * 0.02;
-    return s.life > 0 && s.x > 0 && s.x < canvas.width && s.y > 0 && s.y < canvas.height;
-  });
 
-  // Rauch
-  if (rauchPartikel.length < 30 && Math.random() < 0.02) {
-    rauchPartikel.push(createRauch());
+  // Spieler 1
+  if (frame % 12 === 0) {
+    const keys = shuffleMode ? ['5','6','7','8','9','1','2','3','4'] : ['1','2','3','4','5','6','7','8','9'];
+    const key = keys[Math.floor(Math.random() * keys.length)];
+    p1.pose = key;
+    if (p1.pose === currentMove || Math.random() < 0.25) p1Score++;
+    document.getElementById('p1Score').textContent = p1Score;
+    document.querySelectorAll('.key-btn.p1').forEach(b => {
+      b.classList.toggle('active-p1', b.dataset.key === key);
+    });
+    // Dreh-Shuffle
+    if (shuffleMode) p1.rot += (Math.random() - 0.5) * 0.2;
   }
-  rauchPartikel = rauchPartikel.filter(r => {
-    r.x += r.dx + Math.sin(now / 800 + r.y * 0.01) * 0.1;
-    r.y += r.dy;
-    r.r += 0.02;
-    r.life--;
-    return r.life > 0;
-  });
 
-  // Schatten
-  if (schattenPunkte.length < 40 && Math.random() < 0.02) {
-    schattenPunkte.push(createSchatten());
+  // Spieler 2
+  if (frame % 12 === 0) {
+    const keys = shuffleMode ? ['y','x','c','q','w','e','a','z','d'] : ['q','w','e','a','z','d','y','x','c'];
+    const key = keys[Math.floor(Math.random() * keys.length)];
+    p2.pose = key;
+    if (p2.pose === currentMove || Math.random() < 0.25) p2Score++;
+    document.getElementById('p2Score').textContent = p2Score;
+    document.querySelectorAll('.key-btn.p2').forEach(b => {
+      b.classList.toggle('active-p2', b.dataset.key === key);
+    });
+    if (shuffleMode) p2.rot += (Math.random() - 0.5) * 0.2;
   }
-  schattenPunkte = schattenPunkte.filter(s => {
-    s.x += s.dx + Math.sin(now / 600 + s.y * 0.01) * 0.05;
-    s.y += s.dy + Math.cos(now / 700 + s.x * 0.01) * 0.05;
-    s.life--;
-    return s.life > 0;
-  });
+
+  // Dreh-Update
+  if (spinSpeed !== 0) {
+    spinAngle += spinSpeed;
+    document.getElementById('spinStatus').textContent = `${Math.round(spinAngle)}°`;
+  }
+
+  // Status
+  const status = p1Score > p2Score ? '🔴 P1 führt' : p2Score > p1Score ? '🔵 P2 führt' : '⚖️ Gleichstand';
+  document.getElementById('statusText').textContent = status;
 
   // Zeit
-  const seconds = Math.floor(now / 1000);
+  const seconds = Math.floor(time / 1000);
   const minutes = Math.floor(seconds / 60);
   document.getElementById('timeStatus').textContent =
     `${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
 
-  // Status
-  const status = seifenblasen.length > 10 ? 'schwebt' :
-                 rauchPartikel.length > 15 ? 'verraucht' :
-                 schattenPunkte.length > 20 ? 'verschattet' : 'vermiert';
-  document.getElementById('statusText').textContent = status;
-
-  // Zeichnen
-  drawMaler(now);
-
+  render();
   requestAnimationFrame(update);
 }
 
-// ===== TOGGLES =====
-function addSeife() {
-  for (let i = 0; i < 5; i++) {
-    seifenblasen.push(createSeifenblase());
+// ===== TASTEN =====
+document.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
+  if (key >= '1' && key <= '9') {
+    p1.pose = key;
+    document.querySelectorAll('.key-btn.p1').forEach(b => {
+      b.classList.toggle('active-p1', b.dataset.key === key);
+    });
+    if (key === currentMove || Math.random() < 0.2) p1Score++;
+    document.getElementById('p1Score').textContent = p1Score;
+    if (shuffleMode) p1.rot += 0.1;
+    return;
   }
-  console.log('🫧 SEIFENBLASEN hinzugefügt');
-}
-
-function addRauch() {
-  for (let i = 0; i < 10; i++) {
-    rauchPartikel.push(createRauch());
+  if (['q','w','e','a','z','d','y','x','c'].includes(key)) {
+    p2.pose = key;
+    document.querySelectorAll('.key-btn.p2').forEach(b => {
+      b.classList.toggle('active-p2', b.dataset.key === key);
+    });
+    if (key === currentMove || Math.random() < 0.2) p2Score++;
+    document.getElementById('p2Score').textContent = p2Score;
+    if (shuffleMode) p2.rot += 0.1;
+    return;
   }
-  console.log('💨 RAUCH hinzugefügt');
-}
+});
 
-function addSchatten() {
-  for (let i = 0; i < 10; i++) {
-    schattenPunkte.push(createSchatten());
-  }
-  console.log('🌑 SCHATTEN hinzugefügt');
-}
+// ===== BUTTONS =====
+document.getElementById('btnStart').addEventListener('click', () => {
+  running = !running;
+  document.getElementById('btnStart').classList.toggle('active');
+  document.getElementById('btnStart').textContent = running ? '▶ START' : '⏸ PAUSE';
+  if (running) update();
+});
 
-// ===== PROOF =====
-function showProof() {
+document.getElementById('btnMove').addEventListener('click', () => {
+  const keys = Object.keys(POSES);
+  const randomKey = keys[Math.floor(Math.random() * keys.length)];
+  currentMove = POSES[randomKey]?.label || '—';
+  document.getElementById('moveDisplay').textContent = currentMove;
+  document.getElementById('moveStatus').textContent = currentMove;
+});
+
+document.getElementById('btnShuffle').addEventListener('click', () => {
+  shuffleMode = !shuffleMode;
+  document.getElementById('btnShuffle').classList.toggle('active');
+  document.getElementById('btnShuffle').textContent = shuffleMode ? '🔀 SHUFFLE·ON' : '🔀 SHUFFLE';
+});
+
+document.getElementById('btnSpin').addEventListener('click', () => {
+  spinSpeed = spinSpeed === 0 ? 0.02 : spinSpeed === 0.02 ? 0.05 : 0;
+  document.getElementById('btnSpin').classList.toggle('active');
+  document.getElementById('btnSpin').textContent = spinSpeed ? `🔄 DREH ${spinSpeed*100}%` : '🔄 DREH';
+});
+
+document.getElementById('btnProof').addEventListener('click', () => {
   const proof = document.createElement('div');
   proof.style.cssText = `
     position: fixed; inset: 0; background: rgba(0,0,0,0.85);
@@ -526,19 +593,13 @@ function showProof() {
   `;
   proof.innerHTML = `
     <div style="text-align:center; padding:40px; border:1px solid rgba(255,170,0,0.1); border-radius:20px; background:rgba(10,10,20,0.6); max-width:450px;">
-      <div style="font-size:48px; color:#ffaa00;">🎨</div>
-      <div style="color:#ffaa00; font-size:20px; margin:12px 0; letter-spacing:4px;">MALERISCHER KOPF</div>
+      <div style="font-size:48px;">💃</div>
+      <div style="color:#ffaa00; font-size:20px; margin:12px 0; letter-spacing:4px;">SHUFFLE · DREH</div>
       <div style="color:#88ddbb; font-size:13px; line-height:1.8;">
-        🫧 SEIFENBLASEN: ${seifenblasen.length}<br>
-        💨 RAUCH: ${rauchPartikel.length}<br>
-        🌑 SCHATTEN: ${schattenPunkte.length}<br>
-        🎨 VERMIERUNG: ${Math.round(vermier)}<br>
-        💪 DRUCK: ${Math.round(druck)}<br>
-        🌊 SCHWINGUNG: ${Math.round(schwingung)}<br>
-        🎯 NUANCE: ${Math.round(nuance)}
-      </div>
-      <div style="color:#445555; font-size:10px; margin-top:12px; border-top:1px solid rgba(255,255,255,0.02); padding-top:12px;">
-        SEIFENBLASEN · RAUCH · SCHATTEN · VERMIERUNG
+        🔴 P1: ${p1Score} · 🔵 P2: ${p2Score}<br>
+        🎯 MOVE: ${currentMove}<br>
+        🔄 DREH: ${Math.round(spinAngle)}°<br>
+        🔀 SHUFFLE: ${shuffleMode ? 'AN' : 'AUS'}
       </div>
       <button onclick="this.parentElement.parentElement.remove()" style="
         margin-top:14px; background:rgba(20,35,35,0.2); color:#668888;
@@ -548,44 +609,23 @@ function showProof() {
     </div>
   `;
   document.body.appendChild(proof);
-}
-
-// ===== RESET =====
-function resetAll() {
-  seifenblasen = [];
-  rauchPartikel = [];
-  schattenPunkte = [];
-  vermier = 0;
-  druck = 0;
-  schwingung = 0;
-  nuance = 0;
-  document.getElementById('btnStart').classList.remove('active');
-  document.getElementById('statusText').textContent = 'reset';
-}
-
-// ===== CONTROLS =====
-document.getElementById('btnStart').addEventListener('click', () => {
-  running = !running;
-  document.getElementById('btnStart').classList.toggle('active');
-  document.getElementById('btnStart').textContent = running ? '▶ START' : '⏸ PAUSE';
-  document.getElementById('statusText').textContent = running ? 'vermiert' : 'pausiert';
-  if (running) update();
 });
 
-document.getElementById('btnSeife').addEventListener('click', addSeife);
-document.getElementById('btnRauch').addEventListener('click', addRauch);
-document.getElementById('btnSchatten').addEventListener('click', addSchatten);
-document.getElementById('btnProof').addEventListener('click', showProof);
-document.getElementById('btnReset').addEventListener('click', resetAll);
-
-// ===== TASTATUR =====
-document.addEventListener('keydown', (e) => {
-  if (e.key === ' ') { e.preventDefault(); document.getElementById('btnStart').click(); }
-  if (e.key === 's' || e.key === 'S') document.getElementById('btnSeife').click();
-  if (e.key === 'r' || e.key === 'R') document.getElementById('btnRauch').click();
-  if (e.key === 'a' || e.key === 'A') document.getElementById('btnSchatten').click();
-  if (e.key === 'p' || e.key === 'P') document.getElementById('btnProof').click();
-  if (e.key === 'x' || e.key === 'X') document.getElementById('btnReset').click();
+document.getElementById('btnReset').addEventListener('click', () => {
+  p1Score = 0; p2Score = 0; currentMove = '—';
+  p1.pose = '5'; p2.pose = 'c';
+  spinAngle = 0; shuffleMode = false; spinSpeed = 0;
+  document.getElementById('p1Score').textContent = '0';
+  document.getElementById('p2Score').textContent = '0';
+  document.getElementById('moveDisplay').textContent = '—';
+  document.getElementById('moveStatus').textContent = '—';
+  document.getElementById('spinStatus').textContent = '0°';
+  document.getElementById('btnShuffle').textContent = '🔀 SHUFFLE';
+  document.getElementById('btnShuffle').classList.remove('active');
+  document.getElementById('btnSpin').textContent = '🔄 DREH';
+  document.getElementById('btnSpin').classList.remove('active');
+  document.querySelectorAll('.key-btn').forEach(b => b.className = 'key-btn');
+  document.getElementById('statusText').textContent = 'reset';
 });
 
 // ===== INIT =====
@@ -593,9 +633,9 @@ resizeCanvas();
 setTimeout(resizeCanvas, 200);
 update();
 
-console.log('🎨 MALERISCHER KOPF · SEIFENBLASEN · RAUCH · SCHATTEN');
-console.log('🫧 Seifenblasen · 💨 Rauch · 🌑 Schatten · Vermierung');
-console.log('⌨️  Leertaste=Start/Pause  s=SEIFE  r=RAUCH  a=SCHATTEN  p=PROOF  x=Reset');
+console.log('💃 SHUFFLE · DREH · 2 SPIELER');
+console.log('🔴 P1: 1-9 · 🔵 P2: QWEAZDYXC');
+console.log('🔀 SHUFFLE · 🔄 DREH');
 </script>
 
 </body>
